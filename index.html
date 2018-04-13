@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>node chat app</title>
+    </head>
+    <body>
+        <h1>Hello shan</h1>
+        <input type="text" id="myName" value="Mickey"  />
+        <input type="text" id="myMsg" value="Mickey"  />
+        <button onclick="loadMsg()">SAVE</button>
+        <div id="msgs" style="width:100%">
+
+        </div>
+    </body>
+</html>
+<script>
+    var x = {};
+    var msgs = document.getElementById('msgs');
+
+    var getServerData = function(){
+        var req = new XMLHttpRequest();
+        req.open('GET', 'http://localhost:3000/msg', true);
+        req.onload = ()=>{
+            console.log(req.responseText);
+            var text =  '<p>'+x.name+' : '+x.msg +'</p><br>';
+        // msgs.insertAdjacentHTML('beforeEnd', text);
+        }
+        req.send();
+    }
+
+
+    var loadMsg = function() {
+        getServerData();
+        x.name = document.getElementById("myName").value;
+        x.msg = document.getElementById("myMsg").value;
+        var text =  '<p>'+x.name+' : '+x.msg +'</p><br>';
+        msgs.insertAdjacentHTML('beforeEnd', text);
+    };
+</script>
