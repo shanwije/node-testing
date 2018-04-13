@@ -1,39 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>node chat app</title>
-    </head>
-    <body>
-        <h1>Hello shan</h1>
-        <input type="text" id="myName" value="Mickey"  />
-        <input type="text" id="myMsg" value="Mickey"  />
-        <button onclick="loadMsg()">SAVE</button>
-        <div id="msgs" style="width:100%">
 
-        </div>
-    </body>
+<head>
+    <title>node chat app</title>
+</head>
+
+<body>
+    <h1>Hello shan</h1>
+    <input type="text" placeholder="name" id="myName" />
+    <input type="text" placeholder="message" id="myMsg" />
+    <button onclick="loadMsg()">SEND</button>
+    <p id="errorMsg"></p>
+    <div id="msgs" style="width:100%">
+
+    </div>
+</body>
+
 </html>
 <script>
     var x = {};
+    var inputData = {};
     var msgs = document.getElementById('msgs');
 
-    var getServerData = function(){
-        var req = new XMLHttpRequest();
-        req.open('GET', 'http://localhost:3000/msg', true);
-        req.onload = ()=>{
-            console.log(req.responseText);
-            var text =  '<p>'+x.name+' : '+x.msg +'</p><br>';
-        // msgs.insertAdjacentHTML('beforeEnd', text);
+    var setDiv = function (res) {
+        msgs.innerHTML = '';
+        var res = JSON.parse(res);
+        for (var i = 0; i < res.length; i++) {
+            var x = res[i];
+            var text = '<p>' + x.name + ' : ' + x.msg + '</p><br>';
+            msgs.insertAdjacentHTML('beforeEnd', text);
         }
-        req.send();
+    };
+
+    var httpRequest = function (url, data, callback) {
+        var req = new XMLHttpRequest();
+        req.open('POST', url, true);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.onreadystatechange = function () {
+            if (this.status == 200 && this.readyState == 4) {
+                console.log('response', req.responseText);
+                callback(req.response);
+            }
+        }
+
+        req.send(JSON.stringify(data));
     }
 
 
-    var loadMsg = function() {
-        getServerData();
-        x.name = document.getElementById("myName").value;
-        x.msg = document.getElementById("myMsg").value;
-        var text =  '<p>'+x.name+' : '+x.msg +'</p><br>';
-        msgs.insertAdjacentHTML('beforeEnd', text);
+    var loadMsg = function () {
+
+        document.getElementById('errorMsg').innerHTML = '';
+        inputData.name = document.getElementById('myName').value;
+        inputData.msg = document.getElementById('myMsg').value;
+        if (inputData.name && inputData.msg) {
+            httpRequest('http://localhost:3000/msg', inputData, setDiv);
+        } else {
+            document.getElementById('errorMsg').innerHTML = "Please fill both input fields";
+        }
+
     };
 </script>
