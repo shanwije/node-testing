@@ -6,7 +6,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 
-var mongoURL = 'mongodb://admin:admin@ds159926.mlab.com:59926/node_mongo_test'
+var mongoURL = 'mongodb://admin:admin@ds159926.mlab.com:59926/node_mongo_test';
+
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+// app.
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -23,9 +27,14 @@ var DBModel = mongoose.model('DBModel', {
 });
 
 //---------------------------
-var port = 3000;
-app.use(express.static(__dirname));
-var server = http.listen(port, ()=>{
+// var port = 3000;
+// app.use(express.static(__dirname));
+// var server = http.listen(port, ()=>{
+
+// });
+
+var server = http.listen(port, ipaddress, function() {
+    // Do your stuff
     console.log('server listning to',server.address());
 });
 //----------------------------
