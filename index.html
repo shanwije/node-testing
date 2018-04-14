@@ -31,7 +31,10 @@
     var setDiv = function (res) {
         console.log("setdiv res", res);
         msgs.innerHTML = '';
-        var res = JSON.parse(res);
+        if(typeof res == 'string'){
+            res = JSON.parse(res);
+        }
+
         for (var i = 0; i < res.length; i++) {
             var x = res[i];
             var text = '<p>' + x.name + ' : ' + x.msg + '</p><br>';
