@@ -1,3 +1,6 @@
+ 
+<script src="/socket.io/socket.io.js"></script>
+
 <!DOCTYPE html>
 <html>
 
@@ -21,8 +24,12 @@
     var x = {};
     var inputData = {};
     var msgs = document.getElementById('msgs');
+    var socket = io();
+
+
 
     var setDiv = function (res) {
+        console.log("setdiv res", res);
         msgs.innerHTML = '';
         var res = JSON.parse(res);
         for (var i = 0; i < res.length; i++) {
@@ -32,6 +39,7 @@
         }
     };
 
+    socket.on('myMsg', setDiv); 
     var httpRequest = function (url, data, callback) {
         var req = new XMLHttpRequest();
         req.open('POST', url, true);
@@ -59,4 +67,6 @@
         }
 
     };
+
+
 </script>
