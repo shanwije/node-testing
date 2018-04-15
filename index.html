@@ -60,11 +60,14 @@
 
     var loadMsg = function () {
 
+        var ipaddress =  "127.0.0.1";
+        var port =  8080;
+
         document.getElementById('errorMsg').innerHTML = '';
         inputData.name = document.getElementById('myName').value;
         inputData.msg = document.getElementById('myMsg').value;
         if (inputData.name && inputData.msg) {
-            httpRequest('http://localhost:3000/msg', inputData, setDiv);
+            httpRequest('http://'+ipaddress+':'+port+'/msg', inputData, setDiv);
         } else {
             document.getElementById('errorMsg').innerHTML = "Please fill both input fields";
         }
