@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 mongoose.connect(mongoURL, (err) =>{
-    console.log("DB connected ", err);
+    console.log("DB connected , if any error : ", err);
 })
 
 var DBModel = mongoose.model('DBModel', {
@@ -28,11 +28,11 @@ var DBModel = mongoose.model('DBModel', {
 
 //---------------------------
 // var port = 3000;
-// app.use(express.static(__dirname));
+
 // var server = http.listen(port, ()=>{
 
 // });
-
+app.use(express.static(__dirname));
 var server = http.listen(port, ipaddress, function() {
     // Do your stuff
     console.log('server listning to',server.address());
